@@ -20,9 +20,25 @@ exports.createUser = async (req, res) => {
 
 exports.getUser = async (req,res)=>{
   try {
-      let user = await User.findById()
+      let user = await User.findById(req.query.userId)
+      if(!user){
+        res.status(404).json({msg:"User not Found"})
+      }
+      res.status(200).json(user)
   } catch (error) {
     console.log(error);
     res.status(500).json({msg:"Intranal Sever Error"})
+  }
+}
+
+/* -------------- find all user--------------- */
+
+exports.getAllUser = async (req, res)=>{
+  try {
+      let users = await User.find({isDelete:false});
+      res.status(200).json(users)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg:"Internal Server Error"})
   }
 }
